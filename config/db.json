@@ -1,0 +1,6 @@
+{
+	"DatabaseUser" : "user-gamecat",
+	"DatabasePassword" : "asdfasdf123",
+	"DatabaseHost" : "localhost",
+	"DatabaseName" : "gamecatalogue"
+}

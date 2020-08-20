@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="/content/site.css" rel="stylesheet"/>
+    <link href="/content/cssmenu.css" rel="stylesheet"/>
+    <script src="/scripts/modernizr-2.6.2.js"></script>
+    <script src="/scripts/jquery-1.9.1.js"></script>
+    <script src="/scripts/jquery.jqGrid.min.js"></script>
+    <script src="/scripts/grid.addons.js"></script>
+    <script src="/scripts/grid.postext.js"></script>
+    <script src="/scripts/grid.setcolumns.js"></script>
+    <script src="/scripts/jquery.contextmenu.js"></script>
+    <script src="/scripts/jquery.searchFilter.js"></script>
+    <script src="/scripts/jquery.tablednd.js"></script>
+    <script src="/scripts/i18n/grid.locale-en.js"></script>
+    <script src="/scripts/jquery-ui-1.10.3.js"></script>
+    <!---<script src="/scripts/backbone.js"></script>-->
+    <link href="/content/themes/base/jquery.ui.core.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.resizable.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.selectable.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.accordion.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.autocomplete.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.button.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.dialog.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.menu.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.slider.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.tabs.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.datepicker.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.progressbar.css" rel="stylesheet"/>
+    <link href="/content/themes/base/jquery.ui.theme.css" rel="stylesheet"/>
+    <link href="/content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet"/>
+    <link href="/content/jquery.jqGrid/searchFilter.css" rel="stylesheet"/>
+    <link href="/content/jquery.jqGrid/ui.multiselect.css" rel="stylesheet"/>
+    {{template "HeaderContent"}}
+</head>
+<body>
+    <script type="text/javascript">
+	
+        $(document).ready(function () {
+            //$.noConflict();
+            //$('#copyright').hide();
+            //$("#mainMenu").menu();
+        });
+	
+    </script>
+    <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                   <p class="site-title">Golang Test</p>
+                </div>
+                <div class="float-right">
+                    {{template "LoginControl"}}
+                    <nav>
+                        <div id="cssmenu">
+                            <ul>
+                               <li class="active"><a href="/"><span>Home</span></a></li>
+                               <li class="active"><a href="/borrow"><span>Borrow</span></a></li>
+                               <li class='last'><a href='#'><span>Admin</span></a>
+                                  <ul>
+                                     <li class='has-sub'><a href='/admin'><span>Game List Admin</span></a>
+                                     </li>
+                                  </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div style="float:none;clear:both;"></div>
+            </div>
+        </header>
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix">
+            {{template "BodyContent"}}
+        </section>
+    </div>
+    <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p></p>
+                </div>
+            </div>
+    </footer>
+</body>
+</html>
+

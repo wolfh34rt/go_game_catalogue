@@ -1,1 +1,1 @@
-# go_game_catalogue
+Game Catalogue Basic Conversion Project

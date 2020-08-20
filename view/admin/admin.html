@@ -1,0 +1,173 @@
+{{define "HeaderContent"}}
+    <script type="text/javascript">
+        var mediatypes;
+        var platforms;
+        var jqDataUrl = '/admin/get_items';
+        var jqPlatformsDataUrl = '/admin/get_platforms'
+        var jqMediaTypesDataUrl = '/admin/get_mediatypes'
+        var jqEditDataUrl = '/admin/post_operations';
+        var jqDeleteDataUrl = '/admin/delete';
+
+        $(document).ready(function () {
+            $.ajax({
+                url: jqPlatformsDataUrl,
+                datatype: "json",
+                mtype: "POST",
+                async: false,
+                success: function(data) {
+                    platforms = data;
+                }
+            });
+
+            $.ajax({
+                url: jqMediaTypesDataUrl,
+                datatype: "json",
+                mtype: "POST",
+                async: false,
+                success: function(data) {
+                    mediatypes = data;
+                }
+            });
+
+            $.extend($.jgrid.del, {
+                ajaxDelOptions: { 
+                    success: function ( data ) {
+                        if (!data.result) {
+                            $("#divmsg").html(data.message);
+                        }
+                        else {
+                            $("#divmsg").html(data.message);
+                            $('#gamesTable').jqGrid('setGridParam',{ datatype: 'json' }).trigger('reloadGrid');
+                            setTimeout(function () {
+                                $("#divmsg").html("");
+                            }, 3000);
+                        }
+                    }
+                }
+            });
+
+            $('#gamesTable').jqGrid({
+                url: jqDataUrl,
+                datatype: "json",
+                mtype: "POST",
+                colNames: ["ID", "Item Name", "Media Type", "Platform"],
+                colModel: [
+                    { name: "Itemid", index: "Itemid", jsonmap: "Itemid", width: 30, align: "center", editable: false, hidden:true, key:true },
+                    { name: "Itemname", index: "Itemname", jsonmap: "Itemname", width: 250, align: 'left', editable: true },
+                    { name: "Mediatype", index: "Mediatype", jsonmap: "Mediatype", width: 250, align: 'left', edittype:'select', formatter:'select', editable: true, editoptions: { value: mediatypes } },
+                    { name: "Platform", index: "Platform", jsonmap: "Platform", width: 250, align: 'left', edittype:'select', formatter:'select', editable: true, editoptions: { value: platforms } 
+                    }
+                ],
+                jsonReader: { repeatitems : false, root: "rows" },
+                pager: "#gridPager",
+                height:"100%",
+                rowNum: 10,
+                scrollOffset: 0,
+                viewrecords: true,
+                rowList: [5, 10, 20, 50],
+                sortname: "ItemName",
+                sortorder: "asc",
+                caption: "Games",
+                editurl: jqEditDataUrl
+            });
+
+            $("#gamesTable").jqGrid('navGrid', "#gridPager", { 
+                edit: false, 
+                add: false, 
+                search: false
+                },
+                {},
+                {}
+            );
+
+            $("#gamesTable").jqGrid('inlineNav', '#gridPager',
+             {
+                 edit: true,
+                 editicon: "ui-icon-pencil",
+                 add: true,
+                 addicon: "ui-icon-plus",
+                 save: true,
+                 saveicon: "ui-icon-disk",
+                 cancel: true,
+                 cancelicon: "ui-icon-cancel",
+                 addParams: { 
+                    useFormatter: false, 
+                    addRowParams: {
+                        successfunc: function (val) {
+                        var responseObj = jQuery.parseJSON( val.responseText );
+                        alert( val.responseText );
+                        if( responseObj.result == "true" ) {
+                            $( this ).jqGrid( 'setGridParam',{ datatype: 'json' } ).trigger( 'reloadGrid' );
+                            $( "#divmsg" ).html( responseObj.message );
+                            setTimeout(function () {
+                                $( "#divmsg" ).html( "" );
+                            }, 3000);
+                        }
+                        else
+                        {
+                            $( "#divmsg" ).html( responseObj.message );
+                        }
+                    }
+                },
+                extraparam: {
+                    gameId: function() {
+                        var sel_id = $( '#gamesTable' ).jqGrid( 'getGridParam', 'selrow' );
+                        var value = $( '#gamesTable' ).jqGrid( 'getCell', sel_id, 'Itemid' );
+                        return value;
+                    }
+                },
+                successfunc: function ( val ) {
+                    var responseObj = jQuery.parseJSON( val.responseText );
+                    if( responseObj.result == "true" ) {
+                        $( this ).jqGrid( 'setGridParam',{ datatype: 'json' } ).trigger( 'reloadGrid' );
+                        $( "#divmsg" ).html( responseObj.message );
+                        setTimeout( function () {
+                            $( "#divmsg" ).html( "" );
+                        }, 3000 );
+                    }
+                    else
+                    {
+                        $("#divmsg").html( responseObj.message );
+                    }
+                }},
+                editParams: {
+                    keys: false,
+                    oneditfunc: null,
+                    extraparam: {
+                        gameId: function() {
+                            var sel_id = $('#gamesTable').jqGrid('getGridParam', 'selrow');
+                            var value = $('#gamesTable').jqGrid('getCell', sel_id, 'Itemid');
+                            return value;
+                        }
+                    },
+                    successfunc: function (val) {
+                        var responseObj = $.parseJSON(val.responseText);
+                        if(responseObj.result == "true") {
+                            $(this).jqGrid('setGridParam',{ datatype: 'json' }).trigger('reloadGrid');
+                            $("#divmsg").html(responseObj.message);
+                            setTimeout(function () {
+                                $("#divmsg").html("");
+                            }, 3000);
+                        }
+                        else
+                        {
+                            $("#divmsg").html(responseObj.message);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{{end}}
+{{define "BodyContent"}}
+    <h2>List Admin</h2>
+    <div id="divmsg" style="padding: 0px 0px 10px 0px; color: Green; font-weight: bold">
+    </div>
+    <div id="gamesGrid">
+        <table id="gamesTable">
+        </table>
+        <div id="gridPager">
+        </div>
+    </div>
+    {{.Body}}
+{{end}}
